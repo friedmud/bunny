@@ -4,6 +4,10 @@
 #include "ModulesApp.h"
 #include "MooseSyntax.h"
 
+// Kernels
+#include "LogisticGrowth.h"
+#include "PopulationDiffusion.h"
+
 template<>
 InputParameters validParams<bunnyApp>()
 {
@@ -40,6 +44,7 @@ extern "C" void bunnyApp__registerObjects(Factory & factory) { bunnyApp::registe
 void
 bunnyApp::registerObjects(Factory & factory)
 {
+  registerKernel(LogisticGrowth);
 }
 
 // External entry point for dynamic syntax association
