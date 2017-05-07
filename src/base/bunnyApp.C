@@ -45,6 +45,7 @@ void
 bunnyApp::registerObjects(Factory & factory)
 {
   registerKernel(LogisticGrowth);
+  registerKernel(PopulationDiffusion);
 }
 
 // External entry point for dynamic syntax association

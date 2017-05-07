@@ -27,17 +27,17 @@ validParams<LogisticGrowth>()
 LogisticGrowth::LogisticGrowth(const InputParameters & parameters) :
     Kernel(parameters),
     _a(getMaterialProperty<Real>("a")),
-    _K(getMaterialProperty<Real>("k"))
+    _K(getMaterialProperty<Real>("K"))
 {}
 
 Real
 LogisticGrowth::computeQpResidual()
 {
-  return _a[_qp] * _u[_qp] * (1. - (_u[_qp] / _K[_qp]));
+  return -_a[_qp] * _u[_qp] * (1. - (_u[_qp] / _K[_qp]));
 }
 
 Real
 LogisticGrowth::computeQpJacobian()
 {
-  return _a[_qp] * _phi[_j][_qp] * (1. - (2. * _u[_qp] / _K[_qp]));
+  return -_a[_qp] * _phi[_j][_qp] * (1. - (2. * _u[_qp] / _K[_qp]));
 }
