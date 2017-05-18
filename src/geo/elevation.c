@@ -1,23 +1,25 @@
 #include "elevation.h"
 
+/*
 int main(void)
 {
 	float ** elevations = read_elevation_file();
 
 	// Test Denver, CO
-	float denver_lat = 39.760032;	
+	float denver_lat = 39.760032;
 	float denver_long = -104.975970;
 	float denver_elevation = get_elevation(denver_lat, denver_long, elevations);
 	printf("denver elevation = %lf\n", denver_elevation);
 
 	// Test Chicago
-	float chicago_lat = 41.886578;	
+	float chicago_lat = 41.886578;
 	float chicago_long = -87.729444;
 	float chicago_elevation = get_elevation(chicago_lat, chicago_long, elevations);
 	printf("chicago elevation = %lf\n", chicago_elevation);
 
 	return 0;
 }
+*/
 
 float ** allocate_matrix(size_t m, size_t n)
 {
@@ -47,9 +49,9 @@ float get_elevation(float latitude, float longitude, float ** elevations)
 	return elevations[lat_idx][long_idx];
 }
 
-float ** read_elevation_file(void)
+float ** read_elevation_file(char * filename)
 {
-	FILE * in =  fopen("etopo1.xyz", "r");
+	FILE * in =  fopen(filename, "r");
 
 	int N_lat = 1746;
 	int N_long = 4278;
@@ -74,4 +76,3 @@ float ** read_elevation_file(void)
 
 	return elevations;
 }
-

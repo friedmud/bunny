@@ -3,6 +3,6 @@
 #ifndef BUNNY_REVISION_H
 #define BUNNY_REVISION_H
 
-#define BUNNY_REVISION "git commit 2b86071 on 2017-05-06"
+#define BUNNY_REVISION "git commit ca7a313 on 2017-05-07"
 
 #endif // BUNNY_REVISION_H
