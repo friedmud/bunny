@@ -8,6 +8,14 @@
 #include "LogisticGrowth.h"
 #include "PopulationDiffusion.h"
 
+// AuxKernels
+#include "ElevationAux.h"
+#include "LandUseAux.h"
+
+// UserObjects
+#include "ElevationUserObject.h"
+#include "LandUseUserObject.h"
+
 template<>
 InputParameters validParams<bunnyApp>()
 {
@@ -46,6 +54,12 @@ bunnyApp::registerObjects(Factory & factory)
 {
   registerKernel(LogisticGrowth);
   registerKernel(PopulationDiffusion);
+
+  registerAux(ElevationAux);
+  registerAux(LandUseAux);
+
+  registerUserObject(ElevationUserObject);
+  registerUserObject(LandUseUserObject);
 }
 
 // External entry point for dynamic syntax association
