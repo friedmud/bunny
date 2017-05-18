@@ -11,10 +11,17 @@
 // AuxKernels
 #include "ElevationAux.h"
 #include "LandUseAux.h"
+#include "NeighborsWaterAux.h"
+
+// Materials
+#include "USMat.h"
 
 // UserObjects
 #include "ElevationUserObject.h"
 #include "LandUseUserObject.h"
+
+// MeshModifiers
+#include "ReassignWater.h"
 
 template<>
 InputParameters validParams<bunnyApp>()
@@ -57,9 +64,14 @@ bunnyApp::registerObjects(Factory & factory)
 
   registerAux(ElevationAux);
   registerAux(LandUseAux);
+  registerAux(NeighborsWaterAux);
+
+  registerMaterial(USMat);
 
   registerUserObject(ElevationUserObject);
   registerUserObject(LandUseUserObject);
+
+  registerMeshModifier(ReassignWater);
 }
 
 // External entry point for dynamic syntax association

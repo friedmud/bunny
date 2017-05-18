@@ -12,34 +12,36 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-#ifndef LOGISTICGROWTH_H
-#define LOGISTICGROWTH_H
+#ifndef USMAT_H
+#define USMAT_H
 
-#include "Kernel.h"
+#include "Material.h"
 
-class LogisticGrowth;
+// Forward Declarations
+class USMat;
 
 template <>
-InputParameters validParams<LogisticGrowth>();
+InputParameters validParams<USMat>();
 
-/**
- * This kernel implements the Laplacian operator:
- * $\nabla u \cdot \nabla \phi_i$
- */
-class LogisticGrowth : public Kernel
+class USMat : public Material
 {
 public:
-  LogisticGrowth(const InputParameters & parameters);
+  USMat(const InputParameters & parameters);
 
 protected:
-  virtual Real computeQpResidual() override;
-
-  virtual Real computeQpJacobian() override;
+  virtual void initQpStatefulProperties() override;
+  virtual void computeQpProperties() override;
 
   const VariableValue & _land_use;
+  const VariableValue & _elevation;
+  const VariableValue & _neighbors_water;
 
-  const MaterialProperty<Real> & _a;
-  const MaterialProperty<Real> & _K;
+  MaterialProperty<Real> & _D;
+  MaterialProperty<Real> & _a;
+  MaterialProperty<Real> & _K;
+
+  // Bad area penalty
+  std::vector<Real> bad_areas = {7., 9., 5., 6., 8., 11};
 };
 
-#endif /* LOGISTICGROWTH_H */
+#endif // USMAT_H

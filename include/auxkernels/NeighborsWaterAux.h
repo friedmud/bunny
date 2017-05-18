@@ -12,34 +12,39 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-#ifndef LOGISTICGROWTH_H
-#define LOGISTICGROWTH_H
+#ifndef NEIGHBORSWATERAUX_H
+#define NEIGHBORSWATERAUX_H
 
-#include "Kernel.h"
+#include "LandUseUserObject.h"
 
-class LogisticGrowth;
+#include "AuxKernel.h"
+
+// Forward Declarations
+class NeighborsWaterAux;
 
 template <>
-InputParameters validParams<LogisticGrowth>();
+InputParameters validParams<NeighborsWaterAux>();
 
 /**
- * This kernel implements the Laplacian operator:
- * $\nabla u \cdot \nabla \phi_i$
+ * Constant auxiliary value
  */
-class LogisticGrowth : public Kernel
+class NeighborsWaterAux : public AuxKernel
 {
 public:
-  LogisticGrowth(const InputParameters & parameters);
+  /**
+   * Factory constructor, takes parameters so that all derived classes can be
+   * built using the same
+   * constructor.
+   */
+  NeighborsWaterAux(const InputParameters & parameters);
 
 protected:
-  virtual Real computeQpResidual() override;
+  virtual Real computeValue() override;
 
-  virtual Real computeQpJacobian() override;
+  const LandUseUserObject & _land_use_uo;
 
-  const VariableValue & _land_use;
-
-  const MaterialProperty<Real> & _a;
-  const MaterialProperty<Real> & _K;
+private:
+  Point _temp_point;
 };
 
-#endif /* LOGISTICGROWTH_H */
+#endif // NEIGHBORSWATERAUX_H

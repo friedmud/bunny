@@ -12,34 +12,42 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-#ifndef LOGISTICGROWTH_H
-#define LOGISTICGROWTH_H
-
-#include "Kernel.h"
-
-class LogisticGrowth;
+#include "NeighborsWaterAux.h"
 
 template <>
-InputParameters validParams<LogisticGrowth>();
-
-/**
- * This kernel implements the Laplacian operator:
- * $\nabla u \cdot \nabla \phi_i$
- */
-class LogisticGrowth : public Kernel
+InputParameters
+validParams<NeighborsWaterAux>()
 {
-public:
-  LogisticGrowth(const InputParameters & parameters);
+  InputParameters params = validParams<AuxKernel>();
 
-protected:
-  virtual Real computeQpResidual() override;
+  params.addRequiredParam<UserObjectName>("land_use_uo",
+                                          "The name of the UO holding Land Use data.");
 
-  virtual Real computeQpJacobian() override;
+  return params;
+}
 
-  const VariableValue & _land_use;
+NeighborsWaterAux::NeighborsWaterAux(const InputParameters & parameters)
+    : AuxKernel(parameters), _land_use_uo(getUserObject<LandUseUserObject>("land_use_uo"))
+{
+}
 
-  const MaterialProperty<Real> & _a;
-  const MaterialProperty<Real> & _K;
-};
+Real
+NeighborsWaterAux::computeValue()
+{
+  for (unsigned int n = 0; n < _current_elem->n_neighbors(); n++)
+  {
+    auto neighbor = _current_elem->neighbor_ptr(n);
 
-#endif /* LOGISTICGROWTH_H */
+    if (neighbor)
+    {
+      _temp_point = neighbor->centroid();
+
+      auto type = _land_use_uo.landType(_temp_point(1), _temp_point(0));
+
+      if (MooseUtils::absoluteFuzzyEqual(20., type))
+        return 1.0;
+    }
+  }
+
+  return 0.0;
+}

@@ -12,34 +12,36 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-#ifndef LOGISTICGROWTH_H
-#define LOGISTICGROWTH_H
+#ifndef REASSIGNWATER_H
+#define REASSIGNWATER_H
 
-#include "Kernel.h"
+// MOOSE includes
+#include "MeshModifier.h"
 
-class LogisticGrowth;
+// Forward declerations
+class ReassignWater;
 
 template <>
-InputParameters validParams<LogisticGrowth>();
+InputParameters validParams<ReassignWater>();
 
 /**
- * This kernel implements the Laplacian operator:
- * $\nabla u \cdot \nabla \phi_i$
+ * MeshModifier for assigning a subdomain ID to all elements
  */
-class LogisticGrowth : public Kernel
+class ReassignWater : public MeshModifier
 {
 public:
-  LogisticGrowth(const InputParameters & parameters);
+  ReassignWater(const InputParameters & parameters);
+
+  ~ReassignWater();
 
 protected:
-  virtual Real computeQpResidual() override;
+  float landType(float lat, float lon) const;
 
-  virtual Real computeQpJacobian() override;
+  virtual void modify() override;
 
-  const VariableValue & _land_use;
+  short ** _land_types;
 
-  const MaterialProperty<Real> & _a;
-  const MaterialProperty<Real> & _K;
+  Point _temp_point;
 };
 
-#endif /* LOGISTICGROWTH_H */
+#endif // REASSIGNWATER_H
