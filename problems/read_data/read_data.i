@@ -1,8 +1,8 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 400
-  ny = 150
+  nx = 6400
+  ny = 2400
   xmin = -130
   xmax = -60
   ymin = 22
@@ -20,6 +20,12 @@
     family = MONOMIAL
   [../]
   [./elevation]
+  [../]
+  [./disp_x]
+  [../]
+  [./disp_y]
+  [../]
+  [./disp_z]
   [../]
 []
 
@@ -40,6 +46,12 @@
   [./ea]
     type = ElevationAux
     variable = elevation
+    execute_on = initial
+    elevation_uo = elevation
+  [../]
+  [./dz]
+    type = ElevationAux
+    variable = disp_z
     execute_on = initial
     elevation_uo = elevation
   [../]
@@ -73,6 +85,11 @@
   [../]
 []
 
+[Problem]
+  type = FEProblem
+  solve = false
+[]
+
 [Executioner]
   type = Steady
   solve_type = PJFNK
@@ -83,4 +100,3 @@
 [Outputs]
   exodus = true
 []
-
