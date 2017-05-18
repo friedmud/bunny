@@ -35,7 +35,8 @@ ElevationAux::ElevationAux(const InputParameters & parameters)
 Real
 ElevationAux::computeValue()
 {
-  _temp_point = _current_elem->centroid();
+  //  _temp_point = _current_elem->centroid();
+  _temp_point = *_current_node;
 
   return _elevation_uo.elevation(_temp_point(1), _temp_point(0));
 }

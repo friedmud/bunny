@@ -1,8 +1,8 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 40
-  ny = 15
+  nx = 400
+  ny = 150
   xmin = -130
   xmax = -60
   ymin = 22
@@ -19,6 +19,8 @@
     order = CONSTANT
     family = MONOMIAL
   [../]
+  [./elevation]
+  [../]
 []
 
 [Kernels]
@@ -34,6 +36,12 @@
     variable = land_use
     execute_on = initial
     land_use_uo = land_use
+  [../]
+  [./ea]
+    type = ElevationAux
+    variable = elevation
+    execute_on = initial
+    elevation_uo = elevation
   [../]
 []
 
@@ -56,6 +64,11 @@
   [./land_use]
     type = LandUseUserObject
     data_file = ../../data/lc.bin
+    execute_on = initial
+  [../]
+  [./elevation]
+    type = ElevationUserObject
+    data_file = ../../data/etopo1.xyz
     execute_on = initial
   [../]
 []
