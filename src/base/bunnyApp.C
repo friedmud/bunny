@@ -12,6 +12,7 @@
 #include "ElevationAux.h"
 #include "LandUseAux.h"
 #include "NeighborsWaterAux.h"
+#include "PopulationAux.h"
 
 // Materials
 #include "USMat.h"
@@ -19,6 +20,7 @@
 // UserObjects
 #include "ElevationUserObject.h"
 #include "LandUseUserObject.h"
+#include "PopulationUserObject.h"
 
 // MeshModifiers
 #include "ReassignWater.h"
@@ -65,11 +67,13 @@ bunnyApp::registerObjects(Factory & factory)
   registerAux(ElevationAux);
   registerAux(LandUseAux);
   registerAux(NeighborsWaterAux);
+  registerAux(PopulationAux);
 
   registerMaterial(USMat);
 
   registerUserObject(ElevationUserObject);
   registerUserObject(LandUseUserObject);
+  registerUserObject(PopulationUserObject);
 
   registerMeshModifier(ReassignWater);
 }

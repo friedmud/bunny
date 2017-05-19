@@ -53,15 +53,15 @@ USMat::initQpStatefulProperties()
 void
 USMat::computeQpProperties()
 {
-  _D[_qp] = 2;
-  _a[_qp] = 0.02;
+  _D[_qp] = 0.1;
+  _a[_qp] = 0.06;
   _K[_qp] = 100;
 
   // Urban
   if (MooseUtils::absoluteFuzzyEqual(18., _land_use[_qp]))
   {
-    _K[_qp] *= 1000;
-    _a[_qp] *= 2;
+    _K[_qp] *= 100;
+    // _a[_qp] *= 2;
   }
 
   // Hammer water
@@ -82,22 +82,22 @@ USMat::computeQpProperties()
   _D[_qp] *= latitude_penalty;
   _a[_qp] *= latitude_penalty;
   _K[_qp] *= latitude_penalty;
+  */
 
   for (auto ba : bad_areas)
   {
     if (MooseUtils::absoluteFuzzyEqual(ba, _land_use[_qp]))
     {
-      _a[_qp] *= 0.2;
-      _K[_qp] *= 0.2;
+      _a[_qp] *= 0.05;
+      _K[_qp] *= 0.05;
       break;
     }
   }
-  */
 
   // Elevation Penalty
-  Real elevation_penalty = (0.75 / 3000) * _elevation[_qp];
+  Real elevation_penalty = (0.95 / 2000) * _elevation[_qp];
 
-  elevation_penalty = std::min(.75, elevation_penalty);
+  elevation_penalty = std::min(.95, elevation_penalty);
 
   _D[_qp] *= 1. - elevation_penalty;
   _a[_qp] *= 1. - elevation_penalty;
@@ -106,7 +106,7 @@ USMat::computeQpProperties()
   // Water boost
   if (MooseUtils::absoluteFuzzyEqual(1.0, _neighbors_water[_qp]))
   {
-    _D[_qp] *= 1.5;
+    _D[_qp] *= 2;
     _a[_qp] *= 4;
   }
 }

@@ -11,39 +11,38 @@
 /*                                                              */
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
+#include "PopulationUserObject.h"
 
-#ifndef USMAT_H
-#define USMAT_H
-
-#include "Material.h"
-
-// Forward Declarations
-class USMat;
+#include "population.h"
 
 template <>
-InputParameters validParams<USMat>();
-
-class USMat : public Material
+InputParameters
+validParams<PopulationUserObject>()
 {
-public:
-  USMat(const InputParameters & parameters);
+  InputParameters params = validParams<GeneralUserObject>();
 
-protected:
-  virtual void initQpStatefulProperties() override;
-  virtual void computeQpProperties() override;
+  params.addRequiredParam<FileName>("data_file", "Path to the data file");
 
-  const VariableValue & _land_use;
-  const VariableValue & _elevation;
-  const VariableValue & _neighbors_water;
+  return params;
+}
 
-  MaterialProperty<Real> & _D;
-  MaterialProperty<Real> & _a;
-  MaterialProperty<Real> & _K;
+PopulationUserObject::PopulationUserObject(const InputParameters & parameters)
+    : GeneralUserObject(parameters),
+      _populations(read_population_file(const_cast<char *>(getParam<FileName>("data_file").c_str())))
+{
+}
 
-  // Bad area penalty
-  std::vector<Real> bad_areas = {7., 9., 5., /*6.,*/ 8., 11, 15, /*1*/};
+PopulationUserObject::~PopulationUserObject()
+{
+}
 
-  // 11: Great planes
-};
+void
+PopulationUserObject::execute()
+{
+}
 
-#endif // USMAT_H
+float
+PopulationUserObject::population(float lat, float lon) const
+{
+  return get_population(lat, lon, _populations);
+}

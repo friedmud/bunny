@@ -12,38 +12,30 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-#ifndef USMAT_H
-#define USMAT_H
+#include "PopulationAux.h"
 
-#include "Material.h"
-
-// Forward Declarations
-class USMat;
+#include "PopulationUserObject.h"
 
 template <>
-InputParameters validParams<USMat>();
-
-class USMat : public Material
+InputParameters
+validParams<PopulationAux>()
 {
-public:
-  USMat(const InputParameters & parameters);
+  InputParameters params = validParams<AuxKernel>();
 
-protected:
-  virtual void initQpStatefulProperties() override;
-  virtual void computeQpProperties() override;
+  params.addRequiredParam<UserObjectName>("population_uo", "The name of the UO holding the data.");
 
-  const VariableValue & _land_use;
-  const VariableValue & _elevation;
-  const VariableValue & _neighbors_water;
+  return params;
+}
 
-  MaterialProperty<Real> & _D;
-  MaterialProperty<Real> & _a;
-  MaterialProperty<Real> & _K;
+PopulationAux::PopulationAux(const InputParameters & parameters)
+  : AuxKernel(parameters), _population_uo(getUserObject<PopulationUserObject>("population_uo"))
+{
+}
 
-  // Bad area penalty
-  std::vector<Real> bad_areas = {7., 9., 5., /*6.,*/ 8., 11, 15, /*1*/};
+Real
+PopulationAux::computeValue()
+{
+  _temp_point = _current_elem->centroid();
 
-  // 11: Great planes
-};
-
-#endif // USMAT_H
+  return _population_uo.population(_temp_point(1), _temp_point(0));
+}

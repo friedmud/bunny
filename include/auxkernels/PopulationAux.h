@@ -12,38 +12,38 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-#ifndef USMAT_H
-#define USMAT_H
+#ifndef POPULATIONAUX_H
+#define POPULATIONAUX_H
 
-#include "Material.h"
+#include "AuxKernel.h"
 
 // Forward Declarations
-class USMat;
+class PopulationAux;
+class PopulationUserObject;
 
 template <>
-InputParameters validParams<USMat>();
+InputParameters validParams<PopulationAux>();
 
-class USMat : public Material
+/**
+ * Constant auxiliary value
+ */
+class PopulationAux : public AuxKernel
 {
 public:
-  USMat(const InputParameters & parameters);
+  /**
+   * Factory constructor, takes parameters so that all derived classes can be
+   * built using the same
+   * constructor.
+   */
+  PopulationAux(const InputParameters & parameters);
 
 protected:
-  virtual void initQpStatefulProperties() override;
-  virtual void computeQpProperties() override;
+  virtual Real computeValue() override;
 
-  const VariableValue & _land_use;
-  const VariableValue & _elevation;
-  const VariableValue & _neighbors_water;
+  const PopulationUserObject & _population_uo;
 
-  MaterialProperty<Real> & _D;
-  MaterialProperty<Real> & _a;
-  MaterialProperty<Real> & _K;
-
-  // Bad area penalty
-  std::vector<Real> bad_areas = {7., 9., 5., /*6.,*/ 8., 11, 15, /*1*/};
-
-  // 11: Great planes
+private:
+  Point _temp_point;
 };
 
-#endif // USMAT_H
+#endif // POPULATIONAUX_H

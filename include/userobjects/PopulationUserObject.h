@@ -11,39 +11,36 @@
 /*                                                              */
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
+#ifndef POPULATIONUSEROBJECT_H
+#define POPULATIONUSEROBJECT_H
 
-#ifndef USMAT_H
-#define USMAT_H
-
-#include "Material.h"
+#include "GeneralUserObject.h"
+#include "libmesh/fparser.hh"
 
 // Forward Declarations
-class USMat;
+class PopulationUserObject;
 
 template <>
-InputParameters validParams<USMat>();
+InputParameters validParams<PopulationUserObject>();
 
-class USMat : public Material
+class PopulationUserObject : public GeneralUserObject
 {
 public:
-  USMat(const InputParameters & parameters);
+  PopulationUserObject(const InputParameters & parameters);
+  /// The PopulationUserObject DEFINITELY needs a destructor!
+  virtual ~PopulationUserObject();
+
+  virtual void initialize() override {}
+  virtual void execute() override;
+  virtual void finalize() override {}
+
+  float population(float lat, float lon) const;
 
 protected:
-  virtual void initQpStatefulProperties() override;
-  virtual void computeQpProperties() override;
+  float ** _populations;
 
-  const VariableValue & _land_use;
-  const VariableValue & _elevation;
-  const VariableValue & _neighbors_water;
-
-  MaterialProperty<Real> & _D;
-  MaterialProperty<Real> & _a;
-  MaterialProperty<Real> & _K;
-
-  // Bad area penalty
-  std::vector<Real> bad_areas = {7., 9., 5., /*6.,*/ 8., 11, 15, /*1*/};
-
-  // 11: Great planes
+private:
+  Point _temp_point;
 };
 
-#endif // USMAT_H
+#endif // POPULATIONUSEROBJECT_H
