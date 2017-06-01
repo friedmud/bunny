@@ -42,7 +42,7 @@ LogisticGrowth::computeQpResidual()
     return 0;
   */
 
-  return -_a[_qp] * _u[_qp] * (1. - (_u[_qp] / _K[_qp]));
+  return -_test[_i][_qp] * _a[_qp] * _u[_qp] * (1. - (_u[_qp] / _K[_qp]));
 }
 
 Real
@@ -53,5 +53,5 @@ LogisticGrowth::computeQpJacobian()
     return 0;
   */
 
-  return -_a[_qp] * _phi[_j][_qp] * (1. - (2. * _u[_qp] / _K[_qp]));
+  return -_test[_i][_qp] * _a[_qp] * _phi[_j][_qp] * (1. - (2. * _u[_qp] / _K[_qp]));
 }

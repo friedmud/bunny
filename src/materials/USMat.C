@@ -53,9 +53,9 @@ USMat::initQpStatefulProperties()
 void
 USMat::computeQpProperties()
 {
-  _D[_qp] = 0.1;
-  _a[_qp] = 0.06;
-  _K[_qp] = 100;
+  _D[_qp] = 0.2;
+  _a[_qp] = 0.05;
+  _K[_qp] = 1e6;
 
   // Urban
   if (MooseUtils::absoluteFuzzyEqual(18., _land_use[_qp]))

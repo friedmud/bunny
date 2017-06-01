@@ -1,8 +1,8 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 600
-  ny = 200
+  nx = 2000
+  ny = 700
   xmin = -130
   xmax = -60
   ymin = 22
@@ -105,7 +105,7 @@
   [./gcm]
     type = GenericConstantMaterial
     prop_names = 'D a K'
-    prop_values = '10 0.01 1'
+    prop_values = '10 0.1 100'
     block = 0
   [../]
   [./us]
@@ -168,4 +168,3 @@
     block = 0
   [../]
 []
-
