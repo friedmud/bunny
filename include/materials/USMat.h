@@ -34,7 +34,12 @@ protected:
 
   const VariableValue & _land_use;
   const VariableValue & _elevation;
+  const VariableGradient & _elevation_grad;
   const VariableValue & _neighbors_water;
+
+  const Real & _base_D;
+  const Real & _base_a;
+  const Real & _base_K;
 
   MaterialProperty<Real> & _D;
   MaterialProperty<Real> & _a;

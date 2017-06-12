@@ -1,8 +1,8 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 2000
-  ny = 700
+  nx = 600
+  ny = 200
   xmin = -130
   xmax = -60
   ymin = 22
@@ -41,6 +41,10 @@
     family = MONOMIAL
   [../]
   [./pop]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+  [./elevation_grad]
     order = CONSTANT
     family = MONOMIAL
   [../]
@@ -98,6 +102,13 @@
     population_uo = pop_uo
     block = 0
   [../]
+  [./eg]
+    type = ElevationGradient
+    variable = elevation_grad
+    elevation = elevation
+    execute_on = timestep_begin
+    block = 0
+  [../]
 []
 
 [Materials]
@@ -116,6 +127,9 @@
     land_use = land_use
     block = 0
     neighbors_water = neighbors_water
+    base_K = 200
+    base_D = 0.03
+    base_a = 0.2
   [../]
 []
 
@@ -145,7 +159,7 @@
 [Executioner]
   type = Transient
   start_time = 1620
-  solve_type = PJFNK
+  solve_type = NEWTON
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
   end_time = 2017
@@ -168,3 +182,4 @@
     block = 0
   [../]
 []
+

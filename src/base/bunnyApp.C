@@ -13,6 +13,7 @@
 #include "LandUseAux.h"
 #include "NeighborsWaterAux.h"
 #include "PopulationAux.h"
+#include "ElevationGradient.h"
 
 // Materials
 #include "USMat.h"
@@ -68,6 +69,7 @@ bunnyApp::registerObjects(Factory & factory)
   registerAux(LandUseAux);
   registerAux(NeighborsWaterAux);
   registerAux(PopulationAux);
+  registerAux(ElevationGradient);
 
   registerMaterial(USMat);
 
